@@ -12,6 +12,7 @@ A multimodal tracking approach combining local and global features for 3D object
 - [Prerequisites](#prerequisites)
 - [Dataset](#dataset)
 - [Environment Setup](#environment-setup)
+- [Method](#method)
 - [Training](#training)
   - [Phase 1: Backbone Pre-training](#phase-1-backbone-pre-training)
   - [Phase 2: Tracking Model](#phase-2-tracking-model)
@@ -91,6 +92,17 @@ When using PointNet with GPU acceleration, the library needs to be loaded and co
 - Cluster with dual **A100-PCIE-40GB**
 
 **Note:** In multi-GPU scenarios, the environment does not properly utilize hybrid usage.
+
+## Method
+
+Our approach uses a local-global feature fusion backbone for multimodal 3D object tracking:
+
+![Backbone Architecture](./figures/backbone.png)
+
+The architecture combines:
+- **Local features**: Point-level representations from PointNet++
+- **Global features**: Scene-level context from voxelized representations
+- **Multimodal fusion**: Integration of LiDAR point clouds and camera images
 
 ## Training
 
@@ -190,5 +202,8 @@ This repository contains basic elements for evaluating metrics and loading data,
 }
 ```
 
+---
 
-
+<div align="center">
+Made with ❤️ for 3D Object Tracking
+</div>
