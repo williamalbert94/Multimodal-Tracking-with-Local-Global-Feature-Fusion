@@ -40,10 +40,39 @@ This project requires access to the View of Delft dataset and corresponding trac
 ### Expected Dataset Structure
 
 ```
-dataset/
-├── ...
-├── ...
-└── ...
+view_of_delft_PUBLIC/
+├── lidar/
+│   ├── ImageSets/
+│   ├── testing/
+│   │   ├── calib/
+│   │   ├── image_2/
+│   │   ├── label_2_tracking/
+│   │   ├── pose/
+│   │   └── velodyne/
+│   └── training/
+│       ├── calib/
+│       ├── image_2/
+│       ├── label_2/
+│       ├── label_2_tracking/
+│       ├── pose/
+│       └── velodyne/
+├── radar/
+│   ├── ImageSets/
+│   ├── testing/
+│   │   ├── calib/
+│   │   ├── image_2/
+│   │   ├── pose/
+│   │   └── velodyne/
+│   └── training/
+│       ├── calib/
+│       ├── image_2/
+│       ├── label_2/
+│       ├── pose/
+│       └── velodyne/
+├── radar_3frames/
+│   └── ...
+└── radar_5frames/
+    └── ...
 ```
 
 ## Environment Setup
@@ -132,6 +161,34 @@ This repository contains basic elements for evaluating metrics and loading data,
 - [AB3DMOT](https://github.com/xinshuoweng/AB3DMOT)
 - [RaTrack](https://github.com/LJacksonPan/RaTrack)
 - [View of Delft Dataset](https://github.com/tudelft-iv/view-of-delft-dataset)
+
+### BibTeX Citations
+
+```bibtex
+@inproceedings{weng2020_ab3dmot,
+  title     = {AB3DMOT: A Baseline for 3D Multi-Object Tracking and New Evaluation Metrics},
+  author    = {Weng, Xinshuo and Wang, Jianren and Held, David and Kitani, Kris},
+  booktitle = {European Conference on Computer Vision (ECCV)},
+  year      = {2020}
+}
+
+@article{pan2024ratrack,
+  title   = {RaTrack: Moving Object Detection and Tracking with 4D Radar Point Cloud},
+  author  = {Pan, Liang and Liu, Zhihao and Thompson, Simon and others},
+  journal = {IEEE Robotics and Automation Letters},
+  year    = {2024}
+}
+
+@inproceedings{palffy2022vod,
+  title     = {Multi-Class Road User Detection with 3+1D Radar in the View-of-Delft Dataset},
+  author    = {Palffy, Andras and Dong, Jiaao and Kooij, Julian F. P. and Gavrila, Dariu M.},
+  booktitle = {IEEE Robotics and Automation Letters},
+  volume    = {7},
+  number    = {2},
+  pages     = {4961--4968},
+  year      = {2022}
+}
+```
 
 
 
