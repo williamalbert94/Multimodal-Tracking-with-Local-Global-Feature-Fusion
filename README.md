@@ -7,7 +7,7 @@
 
 A multimodal tracking approach combining local and global features for 3D object tracking and segmentation using point clouds and images.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Dataset](#dataset)
@@ -23,13 +23,13 @@ A multimodal tracking approach combining local and global features for 3D object
 
 This project requires access to the View of Delft dataset and corresponding tracking annotations.
 
-## 📦 Dataset
+## Dataset
 
 ### Required Data
 
 1. **View of Delft Dataset**
    - Link: [tudelft-iv/view-of-delft-dataset](https://github.com/tudelft-iv/view-of-delft-dataset/tree/main)
-   - ⚠️ Requires authorization from the authors
+   - Requires authorization from the authors
 
 2. **Tracking Annotations**
    - Link: [RaTrack Annotations](https://github.com/LJacksonPan/RaTrack/tree/main)
@@ -46,7 +46,7 @@ dataset/
 └── ...
 ```
 
-## 🐳 Environment Setup
+## Environment Setup
 
 Build and run the Docker environment:
 
@@ -55,7 +55,7 @@ docker compose build
 docker compose run
 ```
 
-### ⚠️ GPU Considerations
+### GPU Considerations
 
 When using PointNet with GPU acceleration, the library needs to be loaded and compiled for the specific GPU. This environment has been tested on:
 - Personal machine with **RTX 3060**
@@ -63,7 +63,7 @@ When using PointNet with GPU acceleration, the library needs to be loaded and co
 
 **Note:** In multi-GPU scenarios, the environment does not properly utilize hybrid usage.
 
-## 🚀 Training
+## Training
 
 ### Phase 1: Backbone Pre-training
 
@@ -104,7 +104,7 @@ Enable `plot_reid` to visualize results similar to the following:
 
 **Note:** This phase trains with perfect boxes and segmentation. During inference, the pre-trained model from Phase 1 is used.
 
-## 📊 Evaluation
+## Evaluation
 
 Run inference with the pre-trained segmentation model:
 
@@ -114,7 +114,7 @@ python eval.py --config config/eval_config.yaml
 
 Pre-trained weights for both phases are available. Simply point to them in the configuration and run the evaluation script.
 
-## 📈 Results
+## Results
 
 Performance comparison on the View of Delft dataset:
 
@@ -125,7 +125,7 @@ Performance comparison on the View of Delft dataset:
 | **LocalGlobalFusion (Ours)** | **76.5** | **34.0** | **69.5** | **84** | **63.0** |
 | voxelPointFusion | 70.5 | 30.5 | 64.5 | 150 | 53.3 |
 
-## 📚 References
+## References
 
 This repository contains basic elements for evaluating metrics and loading data, adapted from:
 
@@ -133,9 +133,5 @@ This repository contains basic elements for evaluating metrics and loading data,
 - [RaTrack](https://github.com/LJacksonPan/RaTrack)
 - [View of Delft Dataset](https://github.com/tudelft-iv/view-of-delft-dataset)
 
----
 
-<div align="center">
-Made with ❤️ for 3D Object Tracking
-</div>
 
