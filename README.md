@@ -36,7 +36,7 @@ This project requires access to the View of Delft dataset and corresponding trac
    - Link: [RaTrack Annotations](https://github.com/LJacksonPan/RaTrack/tree/main)
 
 3. **2D Projected Annotations**
-   - Available on Zenodo
+   - Available on Zenodo [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18933010.svg)](https://doi.org/10.5281/zenodo.18933010)
 
 ### Expected Dataset Structure
 
@@ -208,3 +208,8 @@ This repository contains basic elements for evaluating metrics and loading data,
 }
 ```
 
+---
+
+<div align="center">
+Made with ❤️ for 3D Object Tracking
+</div>
