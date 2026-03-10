@@ -155,6 +155,12 @@ python eval.py --config config/eval_config.yaml
 
 Pre-trained weights for both phases are available. Simply point to them in the configuration and run the evaluation script.
 
+### Inference Demo
+
+![Inference Visualization](./figures/inferencia.gif)
+
+*Real-time tracking and segmentation inference on View of Delft test sequences*
+
 ## Results
 
 Performance comparison on the View of Delft dataset:
