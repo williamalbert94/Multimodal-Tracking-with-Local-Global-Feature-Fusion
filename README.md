@@ -211,5 +211,4 @@ This repository contains basic elements for evaluating metrics and loading data,
 ---
 
 <div align="center">
-Made with ❤️ for 3D Object Tracking
 </div>
