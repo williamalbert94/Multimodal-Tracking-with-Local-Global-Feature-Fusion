@@ -23,7 +23,7 @@ A multimodal tracking approach combining local and global features for 3D object
 ## Prerequisites
 
 This project requires access to the View of Delft dataset and corresponding tracking annotations.
-
+Weigths: https://doi.org/10.5281/zenodo.19012896
 ## Dataset
 
 ### Required Data
