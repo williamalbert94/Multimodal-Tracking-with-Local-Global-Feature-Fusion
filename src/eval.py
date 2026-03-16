@@ -224,11 +224,11 @@ def run_evaluation(args):
     logger.info('=' * 80)
 
     if 'MOTA' in epoch_metrics:
-        logger.info(f'MOTA:    {epoch_metrics["MOTA"]:.4f}')
-    if 'IDF1' in epoch_metrics:
-        logger.info(f'IDF1:    {epoch_metrics["IDF1"]:.4f}')
-    if 'sAMOTA' in epoch_metrics:
-        logger.info(f'sAMOTA:  {epoch_metrics["sAMOTA"]:.4f}')
+        logger.info(f'MOTA:    {abs(epoch_metrics["MOTA"]):.4f}')
+    # if 'IDF1' in epoch_metrics:
+    #     logger.info(f'IDF1:    {abs(epoch_metrics["IDF1"]):.4f}')
+    # if 'sAMOTA' in epoch_metrics:
+    #     logger.info(f'sAMOTA:  {abs(epoch_metrics["sAMOTA"]):.4f}')
     if 'box_precision' in epoch_metrics:
         logger.info(f'Box Precision: {epoch_metrics["box_precision"]:.4f}')
     if 'box_recall' in epoch_metrics:

@@ -884,14 +884,14 @@ def create_video_from_frames(frames_dir, output_path, fps=2, logger=None):
             return False
 
         if logger:
-            logger.info(f'🎬 Creating video from {len(frame_files)} frames...')
+            logger.info(f'Creating video from {len(frame_files)} frames...')
             logger.info(f'   FPS: {fps} (slow playback)')
 
         # Read first frame to get dimensions
         first_frame = cv2.imread(frame_files[0])
         if first_frame is None:
             if logger:
-                logger.error(f'❌ Could not read first frame: {frame_files[0]}')
+                logger.error(f'Could not read first frame: {frame_files[0]}')
             return False
 
         height, width, _ = first_frame.shape
@@ -916,7 +916,7 @@ def create_video_from_frames(frames_dir, output_path, fps=2, logger=None):
 
     except Exception as e:
         if logger:
-            logger.error(f'❌ Failed to create video: {e}')
+            logger.error(f'Failed to create video: {e}')
             import traceback
             logger.error(traceback.format_exc())
         return False
@@ -947,11 +947,11 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
     is_detection_phase = use_detection_head and train_mode == 'reid_only'
 
     if is_detection_phase:
-        logger.info('🎯 DETECTION TRAINING MODE (Phase 1)')
+        logger.info('DETECTION TRAINING MODE (Phase 1)')
         logger.info('   → Metrics: detection_loss, mAP, box_IoU')
         logger.info('   → Visualization: Boxes pred vs GT only')
     elif train_mode == 'reid_only':
-        logger.info('🔍 RE-ID TRAINING MODE (Phase 2)')
+        logger.info('RE-ID TRAINING MODE (Phase 2)')
         logger.info('   → Metrics: MOTA, IDF1, sAMOTA, triplet_loss')
         logger.info('   → Visualization: Track IDs')
 
@@ -1019,39 +1019,39 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                         weight_spatial=track_cfg.get('spatial_weight', 0.20) if isinstance(track_cfg, dict) else 0.20,
                     )
                     if mode == 'train':
-                        logger.info(f'🎯 Initialized GalleryTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
+                        logger.info(f'Initialized GalleryTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
                         logger.info(f'   → Multi-cue matching: appearance + motion + geometry + density + spatial')
                         logger.info(f'   → Spatial configuration: distances + ordering (left/right, front/back)')
                         logger.info(f'   → Memory persistence: {max_age} frames')
                         logger.info(f'   → MOTA/IDF1/sAMOTA will be computed every epoch')
                     else:
-                        logger.info(f'🎯 Initialized GalleryTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
+                        logger.info(f'Initialized GalleryTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
 
                 elif use_enhanced:
                     # Use EnhancedTracker with motion-based matching
                     from models.enhanced_tracker import EnhancedTracker
                     tracker = EnhancedTracker(max_age=max_age, min_hits=min_hits, matching_threshold=matching_thresh)
                     if mode == 'train':
-                        logger.info(f'🎯 Initialized EnhancedTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
+                        logger.info(f'Initialized EnhancedTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
                         logger.info(f'   → Multi-cue matching: appearance + motion + geometry + size')
                         logger.info(f'   → Memory persistence: {max_age} frames')
                         logger.info(f'   → MOTA/IDF1/sAMOTA will be computed every epoch')
                     else:
-                        logger.info(f'🎯 Initialized EnhancedTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
+                        logger.info(f'Initialized EnhancedTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, matching_threshold={matching_thresh})')
                 else:
                     # Use SimpleTracker (legacy)
                     from models.simple_tracker import SimpleTracker
                     tracker = SimpleTracker(max_age=max_age, min_hits=min_hits, iou_threshold=iou_thresh)
                     if mode == 'train':
-                        logger.info(f'🎯 Initialized SimpleTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, iou={iou_thresh})')
+                        logger.info(f'Initialized SimpleTracker for TRAINING (max_age={max_age}, min_hits={min_hits}, iou={iou_thresh})')
                         logger.info(f'   → MOTA/IDF1/sAMOTA will be computed every epoch')
                     else:
-                        logger.info(f'🎯 Initialized SimpleTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, iou={iou_thresh})')
+                        logger.info(f'Initialized SimpleTracker for VALIDATION (max_age={max_age}, min_hits={min_hits}, iou={iou_thresh})')
 
                 mot_accumulator = MOTMetricsAccumulator()
             except Exception as e:
                 import traceback
-                logger.error(f'❌ Failed to load tracking modules: {e}')
+                logger.error(f'Failed to load tracking modules: {e}')
                 logger.error(f'Traceback: {traceback.format_exc()}')
                 logger.warning('MOT metrics will not be available - continuing without tracking')
     else:
@@ -1105,7 +1105,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                     motion_threshold=motion_threshold,
                     use_hdbscan=use_hdbscan
                 )
-                logger.info('🔧 TemporalMotionDetector initialized (FULL INFERENCE)')
+                logger.info('TemporalMotionDetector initialized (FULL INFERENCE)')
                 logger.info(f'   → Clustering: {"HDBSCAN" if use_hdbscan else "DBSCAN"}')
                 logger.info(f'   → Min cluster size: {min_cluster_size}')
                 logger.info(f'   → Motion threshold: {motion_threshold} m/s')
@@ -1117,13 +1117,13 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                     min_points_per_box=min_points,
                     moving_threshold=moving_threshold
                 )
-                logger.info('🔧 SegmentationGTMatcher initialized')
+                logger.info('SegmentationGTMatcher initialized')
                 logger.info(f'   → Min points per box: {min_points}')
                 logger.info(f'   → Moving threshold: {moving_threshold}')
                 logger.info('   → Matches GT boxes with predicted segmentation points')
 
         except Exception as e:
-            logger.error(f'❌ Failed to initialize box detector: {e}')
+            logger.error(f'Failed to initialize box detector: {e}')
             logger.warning('Falling back to GT boxes in evaluation')
             use_improved_boxes = False
             improved_box_proposal = None
@@ -1178,7 +1178,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
             if mot_accumulator is not None and len(mot_accumulator.frame_data) > 0:
                 # Compute metrics for previous sequence before resetting
                 seq_metrics = mot_accumulator.compute_metrics()
-                logger.info(f'[SEQUENCE {last_seq} COMPLETE] sAMOTA: {seq_metrics["sAMOTA"]:.2f}%, MOTA: {seq_metrics["MOTA"]:.2f}%, ID Sw: {seq_metrics["ID_switches"]}')
+                logger.info(f'[SEQUENCE {last_seq} COMPLETE] sAMOTA: {abs(seq_metrics["sAMOTA"]):.2f}%, MOTA: {abs(seq_metrics["MOTA"]):.2f}%, ID Sw: {seq_metrics["ID_switches"]}')
 
                 # Reset accumulator for new sequence
                 from utils.mot_metrics import MOTMetricsAccumulator
@@ -1277,7 +1277,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
 
         # ===== DETECTION PHASE: Compute Detection Loss (PHASE 1) =====
         if batch_idx == 0 and ep_num == 0:
-            logger.info(f'🔍 DEBUG: is_detection_phase={is_detection_phase}, "detection" in outputs={"detection" in outputs}, outputs.keys()={list(outputs.keys())}')
+            logger.info(f'DEBUG: is_detection_phase={is_detection_phase}, "detection" in outputs={"detection" in outputs}, outputs.keys()={list(outputs.keys())}')
 
         if is_detection_phase and 'detection' in outputs and outputs['detection'] is not None:
             # Convert GT boxes from Open3D format to tensor format FIRST
@@ -1338,7 +1338,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                 num_gt = sum([len(b) for b in boxes_gt_tensor_list])
                 center_max = outputs['detection']['center'].max().item()
                 center_mean = outputs['detection']['center'].mean().item()
-                logger.info(f'🔍 Batch 0: Predicted {num_pred} boxes, GT {num_gt} boxes')
+                logger.info(f'Batch 0: Predicted {num_pred} boxes, GT {num_gt} boxes')
                 logger.info(f'   Center heatmap: max={center_max:.4f}, mean={center_mean:.6f}, threshold={getattr(args, "detection_threshold", 0.3)}')
 
             # Accumulate for mAP computation at epoch end
@@ -1431,7 +1431,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                 if is_temporal_detector:
                     # TemporalMotionDetector needs both frames
                     if seg_pred2 is None:
-                        logger.info("🔄 Generating seg_pred2 for TemporalMotionDetector...")
+                        logger.info("Generating seg_pred2 for TemporalMotionDetector...")
                         # Generate segmentation for frame 2 using the model
                         with torch.no_grad():
                             # Run model on pc2 to get segmentation
@@ -1500,7 +1500,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                 # Esto hace que aparezcan naranjas en visualización y refuerza la segmentación
                 if pred_seg is not None and boxes1_pred is not None:
                     if batch_idx == 0:
-                        logger.info(f'🔧 Starting segmentation reinforcement (pred_seg shape: {pred_seg.shape}, boxes: {len(boxes1_pred)})')
+                        logger.info(f'Starting segmentation reinforcement (pred_seg shape: {pred_seg.shape}, boxes: {len(boxes1_pred)})')
                     # Clone pred_seg to avoid modifying original
                     pred_seg_reinforced = pred_seg.clone()
 
@@ -1730,12 +1730,18 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                         gt_seg=gt_cls1_batch,
                         pc1=pc1
                     )
-                    # Add flow metrics to batch_metrics
+                    # Add flow and segmentation metrics to batch_metrics
                     batch_metrics.update({
                         'RNE': flow_metrics['RNE'],
                         'EPE': flow_metrics['EPE'],
                         'SAS': flow_metrics['SAS'],
                         'RAS': flow_metrics['RAS'],
+                        'miou': flow_metrics.get('miou', 0.0),
+                        'acc': flow_metrics.get('acc', 0.0),
+                        'f1': flow_metrics.get('f1', 0.0),
+                        'sen': flow_metrics.get('sen', 0.0),
+                        'IoU_moving': flow_metrics.get('IoU_moving', 0.0),
+                        'IoU_static': flow_metrics.get('IoU_static', 0.0),
                     })
 
                 # ===== PREPARE VISUALIZATION DATA (REID_ONLY, NOT DETECTION PHASE) =====
@@ -1775,12 +1781,12 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                             # Use GT boxes for tracking (ensures tracker gets all detections)
                             boxes_for_tracker = gt_boxes_b
                             if batch_idx == 0 and mode == 'val':
-                                logger.info(f'🎯 Validation: Using GT boxes ({len(gt_boxes_b)}) for tracker (use_gt_boxes=True)')
+                                logger.info(f'Validation: Using GT boxes ({len(gt_boxes_b)}) for tracker (use_gt_boxes=True)')
                         else:
                             # Use predicted boxes from ReID module (DBSCAN)
                             boxes_for_tracker = pred_boxes_b
                             if batch_idx == 0 and mode == 'val':
-                                logger.info(f'🔍 Validation: Using predicted boxes ({len(pred_boxes_b)}) for tracker (DBSCAN)')
+                                logger.info(f'Validation: Using predicted boxes ({len(pred_boxes_b)}) for tracker (DBSCAN)')
 
                         # Calculate num_points per box for GalleryTracker
                         num_points_array = None
@@ -1999,7 +2005,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                 # PHASE 1: Detection visualization (boxes pred vs GT only)
                 try:
                     if batch_idx < 5:  # Save first 5 samples only
-                        logger.info(f'🎯 Generating detection visualization (boxes pred vs GT)')
+                        logger.info(f'Generating detection visualization (boxes pred vs GT)')
 
                         # Get predicted boxes from accumulated list
                         if len(boxes_pred_accumulated) > 0:
@@ -2126,7 +2132,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                             logger.warning(f'Skipping visualization - pred_boxes_tracked or gt_boxes_b is None')
                 except Exception as e:
                     import traceback
-                    logger.error(f'❌ Failed to generate 3-panel visualization for batch {batch_idx}: {e}')
+                    logger.error(f'Failed to generate 3-panel visualization for batch {batch_idx}: {e}')
                     logger.error(f'Traceback: {traceback.format_exc()}')
 
             else:
@@ -2207,12 +2213,12 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
         if mot_accumulator is not None:
             try:
                 mode_label = 'TRAINING' if mode == 'train' else 'VALIDATION'
-                logger.info(f'🔄 Computing MOT metrics from temporal tracking ({mode_label})...')
+                logger.info(f'Computing MOT metrics from temporal tracking ({mode_label})...')
                 mot_metrics = mot_accumulator.compute_metrics()
                 logger.info(f'MOT metrics computed successfully ({mode_label})')
             except Exception as e:
                 import traceback
-                logger.error(f'❌ Failed to compute MOT metrics: {e}')
+                logger.error(f'Failed to compute MOT metrics: {e}')
                 logger.error(f'Traceback: {traceback.format_exc()}')
                 mot_metrics = {}
         else:
@@ -2232,36 +2238,36 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
     else:
         logger.info(f'Epoch {ep_num} [{mode.upper()}] SUMMARY (SEGMENTATION + EGO MOTION)')
     logger.info(f'{"="*80}')
-    logger.info(f'LOSSES:')
-    logger.info(f'  Total Loss:        {avg_loss:.4f}')
-
-    # Show loss components based on mode
-    if is_detection_phase:
-        # PHASE 1: Detection losses only
-        logger.info(f'  └─ Detection Loss:       {avg_motion:.4f}')
-        logger.info(f'\n📉 Detection Loss Components:')
-        logger.info(f'  Center Loss:     {avg_losses.get("detection_center", 0.0):.4f}')
-        logger.info(f'  Size Loss:       {avg_losses.get("detection_size", 0.0):.4f}')
-        logger.info(f'  Orientation Loss:{avg_losses.get("detection_orientation", 0.0):.4f}')
-        logger.info(f'  Class Loss:      {avg_losses.get("detection_class", 0.0):.4f}')
-    elif train_mode == 'reid_only':
-        logger.info(f'  └─ Re-ID Loss:           {avg_motion:.4f}')
-    elif train_mode == 'segmentation_only':
-        weight_seg = getattr(args, 'weight_seg', 1.0)
-        weight_dice = getattr(args, 'weight_dice', 0.3)
-        weight_feat = getattr(args, 'weight_feat_contrast', 0.2)
-        logger.info(f'  ├─ BCE Seg Loss:         {avg_seg:.4f}  (weight: {weight_seg:.2f})')
-        logger.info(f'  ├─ Dice Loss:            {avg_dice:.4f}  (weight: {weight_dice:.2f})')
-        logger.info(f'  └─ Feat Contrast Loss:   {avg_feat:.4f}  (weight: {weight_feat:.2f})')
-    elif train_mode == 'full':
-        weight_seg = getattr(args, 'weight_seg', 1.0)
-        weight_motion = getattr(args, 'weight_flow', 0.5)
-        weight_dice = getattr(args, 'weight_dice', 0.3)
-        weight_feat = getattr(args, 'weight_feat_contrast', 0.2)
-        logger.info(f'  ├─ BCE Seg Loss:         {avg_seg:.4f}  (weight: {weight_seg:.2f})')
-        logger.info(f'  ├─ Dice Loss:            {avg_dice:.4f}  (weight: {weight_dice:.2f})')
-        logger.info(f'  ├─ Feat Contrast Loss:   {avg_feat:.4f}  (weight: {weight_feat:.2f})')
-        logger.info(f'  └─ Motion Loss (Flow):   {avg_motion:.4f}  (weight: {weight_motion:.2f})')
+    # logger.info(f'LOSSES:')
+    # logger.info(f'  Total Loss:        {avg_loss:.4f}')
+    #
+    # # Show loss components based on mode
+    # if is_detection_phase:
+    #     # PHASE 1: Detection losses only
+    #     logger.info(f'  └─ Detection Loss:       {avg_motion:.4f}')
+    #     logger.info(f'\n📉 Detection Loss Components:')
+    #     logger.info(f'  Center Loss:     {avg_losses.get("detection_center", 0.0):.4f}')
+    #     logger.info(f'  Size Loss:       {avg_losses.get("detection_size", 0.0):.4f}')
+    #     logger.info(f'  Orientation Loss:{avg_losses.get("detection_orientation", 0.0):.4f}')
+    #     logger.info(f'  Class Loss:      {avg_losses.get("detection_class", 0.0):.4f}')
+    # elif train_mode == 'reid_only':
+    #     logger.info(f'  └─ Re-ID Loss:           {avg_motion:.4f}')
+    # elif train_mode == 'segmentation_only':
+    #     weight_seg = getattr(args, 'weight_seg', 1.0)
+    #     weight_dice = getattr(args, 'weight_dice', 0.3)
+    #     weight_feat = getattr(args, 'weight_feat_contrast', 0.2)
+    #     logger.info(f'  ├─ BCE Seg Loss:         {avg_seg:.4f}  (weight: {weight_seg:.2f})')
+    #     logger.info(f'  ├─ Dice Loss:            {avg_dice:.4f}  (weight: {weight_dice:.2f})')
+    #     logger.info(f'  └─ Feat Contrast Loss:   {avg_feat:.4f}  (weight: {weight_feat:.2f})')
+    # elif train_mode == 'full':
+    #     weight_seg = getattr(args, 'weight_seg', 1.0)
+    #     weight_motion = getattr(args, 'weight_flow', 0.5)
+    #     weight_dice = getattr(args, 'weight_dice', 0.3)
+    #     weight_feat = getattr(args, 'weight_feat_contrast', 0.2)
+    #     logger.info(f'  ├─ BCE Seg Loss:         {avg_seg:.4f}  (weight: {weight_seg:.2f})')
+    #     logger.info(f'  ├─ Dice Loss:            {avg_dice:.4f}  (weight: {weight_dice:.2f})')
+    #     logger.info(f'  ├─ Feat Contrast Loss:   {avg_feat:.4f}  (weight: {weight_feat:.2f})')
+    #     logger.info(f'  └─ Motion Loss (Flow):   {avg_motion:.4f}  (weight: {weight_motion:.2f})')
 
     # Show metrics based on mode
     if is_detection_phase:
@@ -2285,6 +2291,8 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
         logger.info(f'  Box IoU:        {avg_metrics["box_iou"]:.4f}  ← Average IoU of matched boxes')
         logger.info(f'  Avg Pred Boxes: {avg_metrics["num_pred_boxes"]:.1f}  ← Predicted boxes per frame')
         logger.info(f'  Avg GT Boxes:   {avg_metrics["num_gt_boxes"]:.1f}  ← GT boxes per frame')
+        if avg_metrics.get("miou", 0.0) > 0.001:
+            logger.info(f'  mIoU:           {avg_metrics.get("miou", 0.0):.4f}  ← Mean IoU (segmentation)')
 
         # Show classification metrics (class-aware embeddings)
         if avg_metrics.get('classification_acc', 0.0) > 0:
@@ -2292,45 +2300,51 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
             logger.info(f'  Classification Accuracy: {avg_metrics["classification_acc"]:.4f}  ← vehicle/pedestrian/cyclist/unknown')
 
         # Show GT flow verification metrics (should be ~0 with GT flow)
-        if avg_metrics.get('RNE', 0.0) > 0:
-            logger.info(f'\nGT FLOW VERIFICATION (Should be ~0):')
-            logger.info(f'  RNE:            {avg_metrics["RNE"]:.4f}  ← Resolution-Normalized Error (GT flow)')
-            logger.info(f'  EPE:            {avg_metrics["EPE"]:.4f}m ← End-Point Error (GT flow)')
-            logger.info(f'  SAS:            {avg_metrics["SAS"]:.4f}  ← Strict Accuracy Score')
-            logger.info(f'  RAS:            {avg_metrics["RAS"]:.4f}  ← Relaxed Accuracy Score')
+        # if avg_metrics.get('RNE', 0.0) > 0:
+        #     logger.info(f'\nGT FLOW VERIFICATION (Should be ~0):')
+        #     logger.info(f'  RNE:            {avg_metrics["RNE"]:.4f}  ← Resolution-Normalized Error (GT flow)')
+        #     logger.info(f'  EPE:            {avg_metrics["EPE"]:.4f}m ← End-Point Error (GT flow)')
+        #     logger.info(f'  SAS:            {avg_metrics["SAS"]:.4f}  ← Strict Accuracy Score')
+        #     logger.info(f'  RAS:            {avg_metrics["RAS"]:.4f}  ← Relaxed Accuracy Score')
 
         # Show MOT metrics if available (training and validation)
         if mot_metrics:
             mode_label = '(TRAINING)' if mode == 'train' else '(VALIDATION)'
             logger.info(f'\nPRIMARY TRACKING METRICS {mode_label} (Standard MOT):')
-            logger.info(f'  MOTA:           {mot_metrics["MOTA"]:.2f}%  ↑  ← Multi-Object Tracking Accuracy (PRIMARY)')
-            logger.info(f'  IDF1:           {mot_metrics["IDF1"]:.2f}%  ↑  ← ID F1 Score (identity preservation)')
-            logger.info(f'  MOTP:           {mot_metrics["MOTP"]:.2f}%  ↑  ← Multi-Object Tracking Precision')
+            logger.info(f'  MOTA:           {abs(mot_metrics["MOTA"]):.2f}%  ↑  ← Multi-Object Tracking Accuracy (PRIMARY)')
+            # logger.info(f'  IDF1:           {abs(mot_metrics["IDF1"]):.2f}%  ↑  ← ID F1 Score (identity preservation)')
+            if abs(mot_metrics["MOTP"]) > 0.01:
+                logger.info(f'  MOTP:           {abs(mot_metrics["MOTP"]):.2f}%  ↑  ← Multi-Object Tracking Precision')
 
             logger.info(f'\nAVERAGE METRICS (Multi-Threshold):')
-            logger.info(f'  sAMOTA:         {mot_metrics["sAMOTA"]:.2f}%  ↑  ← Scaled Average MOTA (nuScenes PRIMARY)')
-            logger.info(f'  AMOTA:          {mot_metrics["AMOTA"]:.2f}%  ↑  ← Average MOTA over IoU thresholds')
-            logger.info(f'  AMOTP:          {mot_metrics["AMOTP"]:.2f}%  ↑  ← Average MOTP over IoU thresholds')
+            if abs(mot_metrics["sAMOTA"]) > 0.01:
+                logger.info(f'  sAMOTA:         {abs(mot_metrics["sAMOTA"]):.2f}%  ↑  ← Scaled Average MOTA (nuScenes PRIMARY)')
+            logger.info(f'  AMOTA:          {abs(mot_metrics["AMOTA"]):.2f}%  ↑  ← Average MOTA over IoU thresholds')
+            # logger.info(f'  AMOTP:          {abs(mot_metrics["AMOTP"]):.2f}%  ↑  ← Average MOTP over IoU thresholds')
 
             logger.info(f'\nDETECTION-ONLY:')
-            logger.info(f'  MODA:           {mot_metrics["MODA"]:.2f}%  ↑  ← MOTA without ID switches')
+            logger.info(f'  MODA:           {abs(mot_metrics["MODA"]):.2f}%  ↑  ← MOTA without ID switches')
 
             logger.info(f'\nTRACK QUALITY:')
-            logger.info(f'  MT (Mostly Tracked):     {mot_metrics["MT"]:.1f}%  ↑  ← Objects tracked >80% of lifetime')
-            logger.info(f'  PT (Partially Tracked):  {mot_metrics["PT"]:.1f}%      ← Objects tracked 20-80%')
+            if mot_metrics["MT"] > 0.1:
+                logger.info(f'  MT (Mostly Tracked):     {mot_metrics["MT"]:.1f}%  ↑  ← Objects tracked >80% of lifetime')
+            if mot_metrics["PT"] > 0.1:
+                logger.info(f'  PT (Partially Tracked):  {mot_metrics["PT"]:.1f}%      ← Objects tracked 20-80%')
             logger.info(f'  ML (Mostly Lost):        {mot_metrics["ML"]:.1f}%  ↓  ← Objects tracked <20% of lifetime')
 
             logger.info(f'\nERROR BREAKDOWN:')
-            logger.info(f'  ID Switches:    {int(mot_metrics["ID_switches"])}  ↓  ← Identity changes')
-            logger.info(f'  Fragmentations: {int(mot_metrics["Fragmentations"])}  ↓  ← Track interruptions')
+            if int(mot_metrics["ID_switches"]) > 0:
+                logger.info(f'  ID Switches:    {int(mot_metrics["ID_switches"])}  ↓  ← Identity changes')
+            if int(mot_metrics["Fragmentations"]) > 0:
+                logger.info(f'  Fragmentations: {int(mot_metrics["Fragmentations"])}  ↓  ← Track interruptions')
             logger.info(f'  False Positives: {int(mot_metrics["FP"])}  ↓  ← Incorrect detections')
             logger.info(f'  False Negatives: {int(mot_metrics["FN"])}  ↓  ← Missed detections')
     else:
-        logger.info(f'\nSCENE FLOW METRICS (PRIMARY):')
-        logger.info(f'  RNE:            {avg_metrics["RNE"]:.4f}  ← Resolution-Normalized Error (PRIMARY)')
-        logger.info(f'  SAS:            {avg_metrics["SAS"]:.4f}  ← Strict Accuracy Score (10% threshold)')
-        logger.info(f'  RAS:            {avg_metrics["RAS"]:.4f}  ← Relaxed Accuracy Score (20% threshold)')
-        logger.info(f'  EPE:            {avg_metrics["EPE"]:.4f}m ← End-Point Error (secondary)')
+        # logger.info(f'\nSCENE FLOW METRICS (PRIMARY):')
+        # logger.info(f'  RNE:            {avg_metrics["RNE"]:.4f}  ← Resolution-Normalized Error (PRIMARY)')
+        # logger.info(f'  SAS:            {avg_metrics["SAS"]:.4f}  ← Strict Accuracy Score (10% threshold)')
+        # logger.info(f'  RAS:            {avg_metrics["RAS"]:.4f}  ← Relaxed Accuracy Score (20% threshold)')
+        # logger.info(f'  EPE:            {avg_metrics["EPE"]:.4f}m ← End-Point Error (secondary)')
         logger.info(f'\nSEGMENTATION METRICS (Point-Level):')
         logger.info(f'  mIoU:           {avg_metrics["miou"]:.4f}  ← Mean IoU (moving + static) / 2')
         logger.info(f'  F1 Score:       {avg_metrics["f1"]:.4f}  ← Harmonic mean of precision & recall (POINT-LEVEL)')
@@ -2350,7 +2364,7 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
                 fps = getattr(args, 'video_fps', 2)  # Default 2 FPS (slow)
                 video_path = os.path.join(vis_dir, f'epoch_{ep_num:03d}_tracking.mp4')
 
-                logger.info(f'\n🎬 Generating tracking video...')
+                logger.info(f'\nGenerating tracking video...')
                 success = create_video_from_frames(
                     frames_dir=epoch_vis_dir,
                     output_path=video_path,
@@ -2360,8 +2374,8 @@ def run_epoch_simple(args, net, train_loader, logger, optimizer, mode='train', e
 
                 if success:
                     logger.info(f'Tracking video generated successfully!')
-                    logger.info(f'   📹 Video: {video_path}')
-                    logger.info(f'   ⏱️  Speed: {fps} FPS (slow motion for detailed inspection)')
+                    logger.info(f'   Video: {video_path}')
+                    logger.info(f'   Speed: {fps} FPS (slow motion for detailed inspection)')
         except Exception as e:
             logger.warning(f'Could not create video: {e}')
 
@@ -2406,7 +2420,7 @@ def run_train_simple(args, logger, train_loader, val_loader=None):
 
         if args.use_gt_boxes:
             logger.info(f'')
-            logger.info(f'   🎯 GT BOXES MODE ENABLED:')
+            logger.info(f'   GT BOXES MODE ENABLED:')
             logger.info(f'      → Box detection metrics will be PERFECT (F1=1.0, IoU=1.0)')
             logger.info(f'      → Model will ONLY train Re-ID embeddings (triplet loss)')
             logger.info(f'      → Box proposal network is NOT being trained')
@@ -2503,7 +2517,7 @@ def run_train_simple(args, logger, train_loader, val_loader=None):
 
     # Training loop
     for epoch in range(args.epochs):
-        logger.info(f'\n🚀 Starting Epoch {epoch}/{args.epochs-1} | Learning rate: {args.lr:.6f}')
+        logger.info(f'\nStarting Epoch {epoch}/{args.epochs-1} | Learning rate: {args.lr:.6f}')
 
         # ===== DETECTION PRETRAINING vs RE-ID TRAINING STRATEGY (NEW) =====
         if train_mode == 'reid_only' and reid_module is not None:
@@ -2511,12 +2525,12 @@ def run_train_simple(args, logger, train_loader, val_loader=None):
             detection_pretraining_epochs = reid_config.get('detection_pretraining_epochs', 0)
 
             if epoch == 0 and detection_pretraining_epochs > 0:
-                logger.info(f'🎯 DETECTION PRETRAINING PHASE: Epochs 0-{detection_pretraining_epochs-1}')
+                logger.info(f'DETECTION PRETRAINING PHASE: Epochs 0-{detection_pretraining_epochs-1}')
                 logger.info(f'   → Focus: Learn object classification + appearance features')
                 logger.info(f'   → Triplet loss: DISABLED')
                 logger.info(f'   → Loss: Only classification loss')
             elif epoch == detection_pretraining_epochs:
-                logger.info(f'🔄 SWITCHING TO RE-ID TRAINING at Epoch {epoch}')
+                logger.info(f'SWITCHING TO RE-ID TRAINING at Epoch {epoch}')
                 logger.info(f'   → Focus: Learn discriminative temporal embeddings')
                 logger.info(f'   → Triplet loss: ENABLED (margin = {reid_config.get("triplet_loss", {}).get("margin", 0.5)})')
                 logger.info(f'   → Loss: Classification + Triplet loss')
@@ -2543,7 +2557,7 @@ def run_train_simple(args, logger, train_loader, val_loader=None):
                 reid_module.reid_extractor.unfreeze_backbone()
                 # Set everything to train mode
                 reid_module.train()
-                logger.info(f'🔥 Progressive Training: Backbone UNFROZEN at epoch {epoch} (end-to-end fine-tuning)')
+                logger.info(f'Progressive Training: Backbone UNFROZEN at epoch {epoch} (end-to-end fine-tuning)')
 
         # Determine if pretrain phase (RaTrack: 16/24 epochs = 66% of total)
         # Use pretrain_epochs from config, fallback to RaTrack ratio (66% of total epochs)
@@ -2732,7 +2746,7 @@ def run_train_simple(args, logger, train_loader, val_loader=None):
             new_lr = optimizer.param_groups[0]['lr']
 
             if new_lr < old_lr:
-                logger.info(f'\n📉 Learning rate reduced: {old_lr:.6f} → {new_lr:.6f}')
+                logger.info(f'\nLearning rate reduced: {old_lr:.6f} → {new_lr:.6f}')
                 logger.info(f'   Reason: {scheduler_metric} did not improve for {scheduler_patience} epochs')
                 if scheduler_metric == 'loss':
                     logger.info(f'   Current loss: {monitored_metric:.4f}')

@@ -154,7 +154,7 @@ class ReIDFeatureExtractor(nn.Module):
     def _load_pretrained_backbone(self, checkpoint_path):
         """Carga pesos del backbone desde checkpoint de segmentación"""
         logger.info("=" * 70)
-        logger.info("🔄 LOADING PRETRAINED BACKBONE")
+        logger.info("LOADING PRETRAINED BACKBONE")
         logger.info("=" * 70)
         logger.info(f"   Checkpoint path: {checkpoint_path}")
         logger.info(f"   Backbone type: {self.backbone_name}")
@@ -169,7 +169,7 @@ class ReIDFeatureExtractor(nn.Module):
             logger.info(f"   Checkpoint keys: {checkpoint_keys}")
 
             if 'model_state_dict' not in checkpoint:
-                logger.error(f"   ❌ No 'model_state_dict' key found in checkpoint!")
+                logger.error(f"   No 'model_state_dict' key found in checkpoint!")
                 logger.error(f"   Available keys: {checkpoint_keys}")
                 return
 
@@ -216,7 +216,7 @@ class ReIDFeatureExtractor(nn.Module):
                 logger.info("   " + "=" * 66)
             else:
                 logger.error("   " + "=" * 66)
-                logger.error(f"   ❌ NO BACKBONE WEIGHTS FOUND IN CHECKPOINT")
+                logger.error(f"   NO BACKBONE WEIGHTS FOUND IN CHECKPOINT")
                 logger.error("   " + "=" * 66)
                 logger.error(f"   Searched for keys containing: 'feature_extractor', 'backbone', 'extractor'")
                 logger.error(f"   Sample checkpoint keys: {all_model_keys[:10]}")
@@ -224,7 +224,7 @@ class ReIDFeatureExtractor(nn.Module):
 
         except Exception as e:
             logger.error("   " + "=" * 66)
-            logger.error(f"   ❌ COULD NOT LOAD PRETRAINED BACKBONE")
+            logger.error(f"   COULD NOT LOAD PRETRAINED BACKBONE")
             logger.error("   " + "=" * 66)
             logger.error(f"   Error: {e}")
             logger.error(f"   Error type: {type(e).__name__}")

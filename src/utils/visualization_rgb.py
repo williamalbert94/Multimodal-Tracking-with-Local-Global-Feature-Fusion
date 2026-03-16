@@ -349,10 +349,10 @@ def plot_rgb_projection_simple(rgb_image, transforms, pc_radar, pc_lidar,
     ax.imshow(rgb_image)
 
     # Debug: Check input data
-    print(f"[DEBUG RGB PROJECTION] pc_radar: {pc_radar.shape if pc_radar is not None else None}")
-    print(f"[DEBUG RGB PROJECTION] pc_lidar: {pc_lidar.shape if pc_lidar is not None else None}")
-    print(f"[DEBUG RGB PROJECTION] boxes: {boxes.shape if boxes is not None and hasattr(boxes, 'shape') else len(boxes) if boxes is not None else None}")
-    print(f"[DEBUG RGB PROJECTION] rgb_image: {rgb_image.shape}")
+    # print(f"[DEBUG RGB PROJECTION] pc_radar: {pc_radar.shape if pc_radar is not None else None}")
+    # print(f"[DEBUG RGB PROJECTION] pc_lidar: {pc_lidar.shape if pc_lidar is not None else None}")
+    # print(f"[DEBUG RGB PROJECTION] boxes: {boxes.shape if boxes is not None and hasattr(boxes, 'shape') else len(boxes) if boxes is not None else None}")
+    # print(f"[DEBUG RGB PROJECTION] rgb_image: {rgb_image.shape}")
 
     # Variables to store projected points and indices for later use
     uvs_radar_final = None
@@ -385,7 +385,7 @@ def plot_rgb_projection_simple(rgb_image, transforms, pc_radar, pc_lidar,
             uvs_radar = uvs_radar[valid_mask]
             depths_radar = point_depth[valid_mask]
 
-            print(f"[DEBUG RGB PROJECTION] Radar: {len(pc_radar)} input points -> {len(uvs_radar)} projected points")
+            # print(f"[DEBUG RGB PROJECTION] Radar: {len(pc_radar)} input points -> {len(uvs_radar)} projected points")
             if len(uvs_radar) > 0:
                 # Store for later use (2D box drawing)
                 uvs_radar_final = uvs_radar
@@ -395,9 +395,10 @@ def plot_rgb_projection_simple(rgb_image, transforms, pc_radar, pc_lidar,
                           c=-depths_radar, cmap='jet',
                           s=(70 / depths_radar) ** 2, alpha=0.8,
                           vmin=-50, vmax=0)
-                print(f"[DEBUG RGB PROJECTION] Radar scatter plot added successfully")
+                # print(f"[DEBUG RGB PROJECTION] Radar scatter plot added successfully")
             else:
-                print(f"[DEBUG RGB PROJECTION] WARNING: No radar points after projection (all filtered out)")
+                pass
+                # print(f"[DEBUG RGB PROJECTION] WARNING: No radar points after projection (all filtered out)")
         except Exception as e:
             print(f"Warning: Could not project radar points in simple plot: {e}")
             import traceback
@@ -410,13 +411,14 @@ def plot_rgb_projection_simple(rgb_image, transforms, pc_radar, pc_lidar,
                 pc_lidar, transforms.t_camera_lidar,
                 transforms.camera_projection_matrix, rgb_image.shape
             )
-            print(f"[DEBUG RGB PROJECTION] Lidar: {len(pc_lidar)} input points -> {len(uvs_lidar)} projected points")
+            # print(f"[DEBUG RGB PROJECTION] Lidar: {len(pc_lidar)} input points -> {len(uvs_lidar)} projected points")
             if len(uvs_lidar) > 0:
                 ax.scatter(uvs_lidar[:, 0], uvs_lidar[:, 1],
                           c=-depths_lidar, cmap='jet', s=1, alpha=0.4)
-                print(f"[DEBUG RGB PROJECTION] Lidar scatter plot added successfully")
+                # print(f"[DEBUG RGB PROJECTION] Lidar scatter plot added successfully")
             else:
-                print(f"[DEBUG RGB PROJECTION] WARNING: No lidar points after projection (all filtered out)")
+                pass
+                # print(f"[DEBUG RGB PROJECTION] WARNING: No lidar points after projection (all filtered out)")
         except Exception as e:
             print(f"Warning: Could not project lidar points in simple plot: {e}")
             import traceback

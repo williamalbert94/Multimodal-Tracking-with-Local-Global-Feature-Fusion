@@ -304,31 +304,32 @@ def print_detection_metrics(metrics, prefix=''):
         metrics: dict with metric values
         prefix: str, prefix for logging (e.g., 'Train', 'Val')
     """
-    print(f"\n{'='*60}")
-    print(f"{prefix} Detection Metrics")
-    print(f"{'='*60}")
-
-    # Box detection metrics
-    if 'mAP' in metrics:
-        print(f"  Box Detection:")
-        print(f"     mAP (avg):     {metrics['mAP']:.4f}")
-        if 'mAP@0.3' in metrics:
-            print(f"     mAP@0.3:       {metrics['mAP@0.3']:.4f}")
-        if 'mAP@0.5' in metrics:
-            print(f"     mAP@0.5:       {metrics['mAP@0.5']:.4f}")
-        if 'mAP@0.7' in metrics:
-            print(f"     mAP@0.7:       {metrics['mAP@0.7']:.4f}")
-
-        if 'F1@0.5' in metrics:
-            print(f"     F1@0.5:        {metrics['F1@0.5']:.4f}")
-
-    # Segmentation metrics
-    if 'mIoU' in metrics:
-        print(f"\n  Segmentation:")
-        print(f"     mIoU:          {metrics['mIoU']:.4f}")
-        if 'IoU_foreground' in metrics:
-            print(f"     IoU (fg):      {metrics['IoU_foreground']:.4f}")
-        if 'IoU_background' in metrics:
-            print(f"     IoU (bg):      {metrics['IoU_background']:.4f}")
-
-    print(f"{'='*60}\n")
+    # print(f"\n{'='*60}")
+    # print(f"{prefix} Detection Metrics")
+    # print(f"{'='*60}")
+    #
+    # # Box detection metrics
+    # if 'mAP' in metrics:
+    #     print(f"  Box Detection:")
+    #     print(f"     mAP (avg):     {metrics['mAP']:.4f}")
+    #     if 'mAP@0.3' in metrics:
+    #         print(f"     mAP@0.3:       {metrics['mAP@0.3']:.4f}")
+    #     if 'mAP@0.5' in metrics:
+    #         print(f"     mAP@0.5:       {metrics['mAP@0.5']:.4f}")
+    #     if 'mAP@0.7' in metrics:
+    #         print(f"     mAP@0.7:       {metrics['mAP@0.7']:.4f}")
+    #
+    #     if 'F1@0.5' in metrics:
+    #         print(f"     F1@0.5:        {metrics['F1@0.5']:.4f}")
+    #
+    # # Segmentation metrics
+    # if 'mIoU' in metrics:
+    #     print(f"\n  Segmentation:")
+    #     print(f"     mIoU:          {metrics['mIoU']:.4f}")
+    #     if 'IoU_foreground' in metrics:
+    #         print(f"     IoU (fg):      {metrics['IoU_foreground']:.4f}")
+    #     if 'IoU_background' in metrics:
+    #         print(f"     IoU (bg):      {metrics['IoU_background']:.4f}")
+    #
+    # print(f"{'='*60}\n")
+    pass

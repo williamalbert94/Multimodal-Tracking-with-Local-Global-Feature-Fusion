@@ -1,0 +1,120 @@
+# Standalone Evaluation Config
+# =============================
+# Loads trained models and runs validation stage.
+# Uses SAME visualization and metrics as training validation.
+
+exp_name: reid_eval_standalone
+
+# ===== CHECKPOINT PATHS =====
+segmentation_checkpoint_dir: 'checkpoints/segmentation/'
+reid_checkpoint_dir: 'checkpoints/reid/'
+
+# ===== OUTPUT =====
+output_dir: '/project/eval_results_segmentation_onlypnhead1'
+save_visualizations: True
+
+# ===== VISUALIZATION FLAGS =====
+# Control what elements to show in visualizations
+# Can also be overridden via command line (--plot-seg, --plot-boxes, etc.)
+plot_seg: True          # Show segmentation points (orange)
+plot_boxes: False       # Show bounding boxes
+plot_track_ids: False   # Show track IDs on boxes
+plot_lidar: True        # Show lidar background (gray)
+plot_rgb: True          # Enable RGB camera projection panel
+
+# ===== DATASET =====
+dataset: vod
+dataset_path: /project/view_of_delft_PUBLIC/
+num_points: 2048
+batch_size: 1
+num_workers: 4
+min_obj_points: 2
+
+# ===== DEVICE =====
+no_cuda: False
+cuda_device: '0'
+
+# ===== SEGMENTATION VISUALIZATION =====
+# Threshold for segmentation inference visualization
+# Lower values show more segmentation points
+segmentation_threshold: 0.3  # Show segmentation with confidence > 0.3
+
+# ===== BOX PROPOSAL CONFIG (SegmentationGTMatcher - NO DBSCAN) =====
+use_gt_segmentation: False   # Use predicted segmentation
+use_gt_boxes: False    # Use SegmentationGTMatcher (GT boxes with seg points)
+use_gt_ego_motion: True
+
+# ===== STATIC OBJECT HANDLING =====
+# Controls how static objects are handled in GT and detection
+# Options:
+#   'filter': Only moving objects (mov==1) - default behavior
+#   'include_all': All GT boxes (moving + static)
+#   'hybrid': GT moving boxes + clustered static segmented points
+static_object_handling: 'filter'  # Only moving GT boxes
+
+box_proposal:
+  enabled: True
+  detection_mode: 'enhanced'  # GT boxes + enhanced clustering for unmatched points
+  use_hdbscan: True  # Use HDBSCAN for initial clustering
+  moving_threshold: 0.3 # Segmentation confidence threshold
+  min_points_per_box: 1 # Minimum segmented points required per box (for GT matching)
+  max_points_per_box: 500  # Max points to extract per box
+
+  # Enhanced clustering parameters
+  min_cluster_size: 10  # Min points to form a cluster
+  min_samples: 5  # HDBSCAN core point threshold
+  min_distance_from_gt: 2.0  # Min distance (m) from GT boxes for new clusters
+  eps: 1.5  # DBSCAN epsilon (if use_hdbscan=False)
+
+  # Agglomerative clustering refinement
+  use_agglomerative: True  # Enable agglomerative refinement
+  agglo_distance_threshold: 1.0  # Distance threshold for merging clusters
+
+  # Contour-based filtering
+  min_contour_area: 1.0  # Minimum 2D contour area (m²)
+  max_elongation: 4.0  # Max length/width ratio for valid clusters
+
+# ===== RE-ID CONFIG =====
+train_mode: "reid_only"
+
+reid:
+  enabled: True
+  embedding_dim: 1024
+  backbone: "LocalGlobalFusionSimple"
+
+  triplet_loss:
+    margin: 1.5
+    hard_mining: True
+    hard_mining_ratio: 0.85
+
+# ===== TRACKING CONFIG =====
+tracking:
+  enabled: True
+  use_gallery_tracker: True
+  use_enhanced_tracker: False
+
+  # Multi-cue weights
+  appearance_weight: 0.35
+  spatial_weight: 0.25
+  geometry_weight: 0.18
+  motion_weight: 0.15
+  density_weight: 0.07
+
+  # Tracking parameters
+  matching_threshold: 0.3
+  max_age: 12
+  min_hits: 1
+  iou_threshold: 0.25
+  use_kalman: False
+
+# ===== LOSS WEIGHTS (not used in eval, but needed for model init) =====
+loss_weights:
+  box_center: 1.0
+  box_size: 0.5
+  box_iou: 2.0
+  reid_triplet: 2.0
+  classification: 0.5
+
+# ===== VISUALIZATION (uses same functions as training) =====
+# Visualizations are saved automatically in eval mode
+# Same format as training validation
